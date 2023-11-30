@@ -68,6 +68,9 @@ public class ConsumerManager<K, V> {
             log.debug("Awoken from broker poll");
             log.trace("Wakeup caller is:", w);
             records = new ConsumerRecords<>(UniMaps.of());
+        } catch (IllegalStateException ex) {
+            log.error("Failed to poll from broker", ex);
+            records = new ConsumerRecords<>(UniMaps.of());
         } finally {
             pollingBroker.set(false);
         }
